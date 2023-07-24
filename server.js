@@ -3,7 +3,9 @@ const app = express();
 const chalk = require("chalk");
 const router = require("./router/router");
 const { handleError } = require("./utils/errorHandler");
+const cors = require("./cors/cors");
 
+app.use(cors);
 app.use(express.json());
 app.use(express.text());
 app.use(express.static("./public"));

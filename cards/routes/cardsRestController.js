@@ -35,4 +35,6 @@ router.delete("/:id", (req, res) => {
   res.send("in cards delete");
 });
 
+router.use((req, res) => handleError(res, 404, "Page not found in cards"));
+
 module.exports = router;
