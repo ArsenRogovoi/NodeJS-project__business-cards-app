@@ -1,40 +1,78 @@
+//this module responsible for end-points of cards.
+
 const express = require("express");
 const router = express.Router();
 const chalk = require("chalk");
+const { handleError } = require("../../utils/errorHandler");
+const { getCards, create, like, remove, getCard, getMyCards, update } = require("../models/cardsAccessData");
 
-router.get("/", (req, res) => {
-  console.log(chalk.yellowBright("in cards get"));
-  res.send("in cards get");
+router.get("/", async (req, res) => {
+  try {
+    const cards = await getCards();
+    return res.send(cards);
+  } catch (error) {
+    return handleError(res, error.status || 500, error.message);
+  }
 });
 
-router.get("/:id", (req, res) => {
-  const id = req.params.id;
-  console.log(chalk.yellowBright("in cards get params"));
-  res.send("in cards get params");
+router.get("/my-cards", async (req, res) => {
+  try {
+    const userId = "123456";
+    const cards = await getMyCards(userId);
+    return res.send(cards);
+  } catch (error) {
+    return handleError(res, error.status || 500, error.message);
+  }
 });
 
-router.post("/", (req, res) => {
-  console.log(chalk.yellowBright("in cards post"));
-  res.send("in cards post");
+router.get("/:id", async (req, res) => {
+  try {
+    const id = req.params;
+    const card = await getCard(id);
+    return res.send(card);
+  } catch (error) {
+    return handleError(res, error.status || 500, error.message);
+  }
 });
 
-router.put("/:id", (req, res) => {
-  const id = req.params.id;
-  console.log(chalk.yellowBright("in cards put"));
-  res.send("in cards put");
+router.post("/", async (req, res) => {
+  try {
+    const card = await create(req.body);
+    return res.send(card);
+  } catch (error) {
+    return handleError(res, error.status || 500, error.message);
+  }
 });
 
-router.patch("/:id", (req, res) => {
-  const id = req.params.id;
-  console.log(chalk.yellowBright("in cards patch"));
-  res.send("in cards patch");
+router.put("/", async (req, res) => {
+  try {
+    const id = req.params;
+    const card = await update(id, req.body);
+    return res.send(card);
+  } catch (error) {
+    return handleError(res, error.status || 500, error.message);
+  }
 });
 
-router.delete("/:id", (req, res) => {
-  console.log(chalk.yellowBright("in cards delete"));
-  res.send("in cards delete");
+router.patch("/", async (req, res) => {
+  try {
+    const id = req.params;
+    const userId = "123456";
+    const card = await like(id, userId);
+    return res.send(card);
+  } catch (error) {
+    return handleError(res, error.status || 500, error.message);
+  }
 });
 
-router.use((req, res) => handleError(res, 404, "Page not found in cards"));
+router.delete("/", async (req, res) => {
+  try {
+    const id = req.params;
+    const card = await remove(id);
+    return res.send(card);
+  } catch (error) {
+    return handleError(res, error.status || 500, error.message);
+  }
+});
 
 module.exports = router;

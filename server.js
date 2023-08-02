@@ -4,8 +4,10 @@ const chalk = require("chalk");
 const router = require("./router/router");
 const { handleError } = require("./utils/errorHandler");
 const cors = require("./cors/cors");
+const logger = require("./logger/loggerAdaptor");
 
-app.use(cors);
+app.use(logger);
+// app.use(cors);
 app.use(express.json());
 app.use(express.text());
 app.use(express.static("./public"));
@@ -17,5 +19,5 @@ app.use((err, req, res, next) => {
 
 const PORT = 8181;
 app.listen(PORT, () => {
-  console.log(chalk.blueBright("listening to https//localhost:8181"));
+  console.log(chalk.blueBright(`listening to https//localhost:${PORT}`));
 });

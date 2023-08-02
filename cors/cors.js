@@ -3,7 +3,11 @@ const cors = require("cors");
 
 // Это белый список доменов, с которых ваш сервер будет принимать запросы.
 // Все запросы с других доменов будут отклонены.
-const whitelist = ["http://127.0.0.1:5500", "http://localhost:3000"];
+const whitelist = [
+  "http://127.0.0.1:5500",
+  "http://localhost:3000",
+  "http://localhost:8181",
+];
 
 const corsOptions = {
   // Функция "origin" вызывается каждый раз, когда сервер получает запрос.
@@ -16,6 +20,7 @@ const corsOptions = {
       callback(null, true);
     } else {
       // В противном случае вызываем callback с объектом Error, что означает, что запрос должен быть отклонен.
+      console.log(origin);
       callback(new Error("Not allowed by CORS"));
     }
   },
