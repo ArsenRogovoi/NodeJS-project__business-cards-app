@@ -3,9 +3,12 @@ const router = express.Router();
 const chalk = require("chalk");
 const { handleError } = require("../../utils/errorHandler");
 const { register, login } = require("../models/usersAccessData");
+const {validateRegistration, validateLogin} = require('../validations/userValidationService')
 
 router.post("/", async (req, res) => {
   try {
+    const {error} = validateRegistration(req.body);
+    if(error) return handleError(res, 400, `Joi Error: ${error.details[0].message}`);
     const user = await register(req.body);
     return res.send(user).status(201);
   } catch (error) {
@@ -15,6 +18,8 @@ router.post("/", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   try {
+    const {error} = validateLogin(req.body);
+    if(error) return handleError(res, 400, `Joi Error: ${error.details[0].message}`);
     const user = await login(req.body);
     return res.send(user);
   } catch (error) {
