@@ -5,6 +5,7 @@ const router = require("./router/router");
 const { handleError } = require("./utils/errorHandler");
 const cors = require("./cors/cors");
 const logger = require("./logger/loggerAdaptor");
+const connectToDb = require("./db/dbService");
 
 app.use(logger);
 // app.use(cors);
@@ -20,4 +21,5 @@ app.use((err, req, res, next) => {
 const PORT = 8181;
 app.listen(PORT, () => {
   console.log(chalk.blueBright(`listening to https//localhost:${PORT}`));
+  connectToDb();
 });

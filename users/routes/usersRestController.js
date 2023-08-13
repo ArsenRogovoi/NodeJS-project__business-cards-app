@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const chalk = require("chalk");
 const { handleError } = require("../../utils/errorHandler");
 const { register, login } = require("../models/usersAccessData");
 const {validateRegistration, validateLogin} = require('../validations/userValidationService')
