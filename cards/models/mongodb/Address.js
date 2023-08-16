@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const addressSchema = mongoose.Schema({
+const Address = new mongoose.Schema({
   state: {
     type: String,
     minLength: 2,
@@ -27,4 +27,4 @@ const addressSchema = mongoose.Schema({
   zip: Number,
 });
 
-module.exports = addressSchema;
+module.exports = Address;

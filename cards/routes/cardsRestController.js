@@ -4,8 +4,17 @@ const express = require("express");
 const router = express.Router();
 const chalk = require("chalk");
 const { handleError } = require("../../utils/errorHandler");
-const { getCards, create, like, remove, getCard, getMyCards, update } = require("../models/cardsAccessData");
+const {
+  getCards,
+  createCard,
+  like,
+  remove,
+  getCard,
+  getMyCards,
+  update,
+} = require("../models/cardsAccessData");
 const validateCard = require("../validations/cardValidationService");
+const normalizeCard = require("../helpers/normalizeCard");
 
 router.get("/", async (req, res) => {
   try {
@@ -38,13 +47,14 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const {error} = validateCard(req.body);
-    if (error) {
+    let card = req.body;
+
+    const { error } = validateCard(req.body); //validation of JOI or other validator
+    if (error)
       return handleError(res, 400, `Joi Error: ${error.details[0].message}`);
-    } else {
-      const card = await create(req.body);
-      return res.status(201).send(card);
-    }
+    card = await normalizeCard(req.body);
+    card = await createCard(card);
+    return res.status(201).send(card);
   } catch (error) {
     return handleError(res, error.status || 500, error.message);
   }

@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
-const imageSchema = require("./Image");
-const addressSchema = require("./Address");
+const Image = require("./Image");
+const Address = require("./Address");
 
-const cardSchema = mongoose.Schema({
+const cardSchema = new mongoose.Schema({
   title: {
     type: String,
     minLength: 2,
@@ -31,11 +31,11 @@ const cardSchema = mongoose.Schema({
   web: {
     type: String,
     match: RegExp(
-      /^(https?:\/\/)?([a-zA-Z0-9.-]+)(:[0-9]{1,4})?(\/[a-zA-Z0-9-%@:;.,~#&+=?]*\b(?:\/[a-zA-Z0-9-%@:;.,~#&+=?]+)*\/?)?$/
+      /^(https?:\/\/)?([a-zA-Z0-9.-]+)(:[0-9]{1,4})?(\/[a-zA-Z0-9-%@:;.,~#&+_=?]*\b(?:\/[a-zA-Z0-9-%@:;.,~#&+_=?]+)*\/?)?$/
     ),
   },
-  image: imageSchema,
-  address: addressSchema,
+  image: Image,
+  address: Address,
   bizNumber: {
     type: Number,
     min: 100_000_000,
@@ -52,4 +52,6 @@ const cardSchema = mongoose.Schema({
   likes: [String],
 });
 
-module.exports = cardSchema;
+const Card = mongoose.model("card", cardSchema);
+
+module.exports = Card;

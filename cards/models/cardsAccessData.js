@@ -1,5 +1,7 @@
 //This module responsible for connection to DB
 
+const Card = require("./mongodb/Card");
+
 const DB = process.env.DB || "MONGODB";
 
 const getCards = async () => {
@@ -41,14 +43,14 @@ const getCard = async (cardId) => {
   return Promise.resolve("getCard not in mongodb");
 };
 
-const create = async (normalizedCard) => {
+const createCard = async (normalizedCard) => {
   if (DB === "MONGODB") {
     try {
-      //   throw new Error("Can not create card in the database (create)!");
-      normalizedCard._id = "123456";
-      return Promise.resolve(normalizedCard);
+      let card = new Card(normalizedCard);
+      card = await card.save();
+      return Promise.resolve(card);
     } catch (error) {
-      error.status = 404;
+      error.status = 400;
       return Promise.reject(error);
     }
   }
@@ -97,7 +99,7 @@ const remove = async (cardId, userId) => {
 exports.getCards = getCards;
 exports.getMyCards = getMyCards;
 exports.getCard = getCard;
-exports.create = create;
+exports.createCard = createCard;
 exports.update = update;
 exports.like = like;
 exports.remove = remove;

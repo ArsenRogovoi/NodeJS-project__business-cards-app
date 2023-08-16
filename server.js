@@ -20,6 +20,6 @@ app.use((err, req, res, next) => {
 
 const PORT = 8181;
 app.listen(PORT, () => {
-  console.log(chalk.blueBright(`listening to https//localhost:${PORT}`));
+  console.log(chalk.blueBright(`listening to http://localhost:${PORT}`));
   connectToDb();
 });
