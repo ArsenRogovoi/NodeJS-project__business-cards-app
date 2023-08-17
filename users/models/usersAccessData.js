@@ -1,11 +1,14 @@
+const User = require("./mongodb/User");
+
 const DB = process.env.DB || "MONGODB";
 
-const register = async (normalizedUser) => {
+const registerUser = async (normalizedUser) => {
   if (DB === "MONGODB") {
     try {
-      //   throw new Error("Can not register in the database!");
-      normalizedUser._id = "123456";
-      return Promise.resolve(normalizedUser);
+      let user = new User(normalizedUser);
+      console.log(normalizedUser);
+      user = await user.save();
+      return Promise.resolve(user);
     } catch (error) {
       error.status = 400;
       return Promise.reject(error);
@@ -28,4 +31,4 @@ const login = async (user) => {
 };
 
 exports.login = login;
-exports.register = register;
+exports.registerUser = registerUser;

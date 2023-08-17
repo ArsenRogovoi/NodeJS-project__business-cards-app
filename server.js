@@ -6,9 +6,10 @@ const { handleError } = require("./utils/errorHandler");
 const cors = require("./cors/cors");
 const logger = require("./logger/loggerAdaptor");
 const connectToDb = require("./db/dbService");
+require("dotenv").config();
 
 app.use(logger);
-// app.use(cors);
+app.use(cors);
 app.use(express.json());
 app.use(express.text());
 app.use(express.static("./public"));
@@ -20,6 +21,6 @@ app.use((err, req, res, next) => {
 
 const PORT = 8181;
 app.listen(PORT, () => {
-  console.log(chalk.blueBright(`listening to http://localhost:${PORT}`));
+  console.log(chalk.blueBright(`listening to ${process.env.host}:${PORT}`));
   connectToDb();
 });

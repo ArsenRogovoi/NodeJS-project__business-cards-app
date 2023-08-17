@@ -7,7 +7,7 @@ const normalizeUser = (rawUser) => {
     },
     image: {
       ...rawUser.image,
-      url: rawUser.image.url || "../../public/images/business-card.jpg",
+      url: rawUser.image.url || `${process.env.host}/images/business-card.jpg`,
       alt: rawUser.image.alt || "Business card image",
     },
     address: {
