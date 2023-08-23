@@ -1,8 +1,8 @@
 const chalk = require("chalk");
 
-const handleError = (res, status, message) => {
+const handleError = (res, status, message = "") => {
   console.log(chalk.redBright(message));
-  res.status(status).send(message);
+  return res.status(status).send(message);
 };
 
 const handleBadRequest = async (validator, error) => {
@@ -12,5 +12,11 @@ const handleBadRequest = async (validator, error) => {
   return Promise.reject(error);
 };
 
+const handleJoiError = async (error) => {
+  const joiError = new Error(error.details[0].message);
+  return handleBadRequest("Joi", joiError);
+};
+
 exports.handleError = handleError;
 exports.handleBadRequest = handleBadRequest;
+exports.handleJoiError = handleJoiError;
