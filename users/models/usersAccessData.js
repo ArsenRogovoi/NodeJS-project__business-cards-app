@@ -5,8 +5,9 @@ const {
 const { handleBadRequest } = require("../../utils/errorHandler");
 const User = require("./mongodb/User");
 const lodash = require("lodash");
+const config = require("config");
 
-const DB = process.env.DB || "MONGODB";
+const DB = config.get("DB");
 
 const registerUser = async (normalizedUser) => {
   if (DB === "MONGODB") {

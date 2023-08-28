@@ -2,8 +2,9 @@
 
 const { handleBadRequest } = require("../../utils/errorHandler");
 const Card = require("./mongodb/Card");
+const config = require("config");
 
-const DB = process.env.DB || "MONGODB";
+const DB = config.get("DB");
 
 const getCards = async () => {
   if (DB === "MONGODB") {
