@@ -11,7 +11,7 @@ const normalizeUser = (rawUser) => {
     image: {
       ...rawUser.image,
       url: rawUser.image.url || `${HOST}/images/business-card.jpg`,
-      alt: rawUser.image.alt || "Business card image",
+      alt: rawUser.image.alt || "avatar",
     },
     address: {
       ...rawUser.address,

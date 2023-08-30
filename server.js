@@ -7,6 +7,10 @@ const cors = require("./cors/cors");
 const logger = require("./logger/loggerAdaptor");
 const connectToDb = require("./db/dbService");
 const config = require("config");
+const {
+  generateInitialCards,
+  generateInitialUsers,
+} = require("./initialData/initialDataService");
 
 app.use(logger);
 app.use(cors);
@@ -24,4 +28,6 @@ const HOST = config.get("HOST");
 app.listen(PORT, () => {
   console.log(chalk.blueBright(`listening to http://${HOST}:${PORT}`));
   connectToDb();
+  generateInitialCards();
+  generateInitialUsers();
 });
