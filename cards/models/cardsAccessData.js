@@ -9,7 +9,7 @@ const DB = config.get("DB");
 const getCards = async () => {
   if (DB === "MONGODB") {
     try {
-      const cards = Card.find();
+      const cards = await Card.find();
       return Promise.resolve(cards);
     } catch (error) {
       error.status = 404;
@@ -22,7 +22,7 @@ const getCards = async () => {
 const getMyCards = async (userId) => {
   if (DB === "MONGODB") {
     try {
-      const cards = Card.find({ user_id: userId });
+      const cards = await Card.find({ user_id: userId });
       if (!cards) throw new Error("Could not find any card in the database");
       return Promise.resolve(cards);
     } catch (error) {
@@ -36,7 +36,7 @@ const getMyCards = async (userId) => {
 const getCard = async (cardId) => {
   if (DB === "MONGODB") {
     try {
-      const card = Card.findById(cardId);
+      const card = await Card.findById(cardId);
       if (!card) throw new Error("Could not find this card in the database");
       return Promise.resolve(card);
     } catch (error) {
@@ -64,7 +64,9 @@ const createCard = async (normalizedCard) => {
 const updateCard = async (id, normalizedCard) => {
   if (DB === "MONGODB") {
     try {
-      const card = Card.findByIdAndUpdate(id, normalizedCard, { new: true });
+      const card = await Card.findByIdAndUpdate(id, normalizedCard, {
+        new: true,
+      });
       if (!card)
         throw new Error(
           "Could not update this card because a card with this ID cannot be found in the database"
@@ -81,7 +83,7 @@ const updateCard = async (id, normalizedCard) => {
 const likeCard = async (cardId, userId) => {
   if (DB === "MONGODB") {
     try {
-      let card = Card.findById(cardId);
+      let card = await Card.findById(cardId);
       if (!card)
         throw new Error(
           "Could not change card likes because a card with this ID cannot be found in the database"
@@ -103,14 +105,21 @@ const likeCard = async (cardId, userId) => {
   return Promise.resolve("card updated not in mongoDB");
 };
 
-const deleteCard = async (id) => {
+const deleteCard = async (cardId, user) => {
   if (DB === "MONGODB") {
     try {
-      const card = Card.findByIdAndDelete(id);
+      let card = await Card.findById(cardId);
       if (!card)
         throw new Error(
           "Could not delete this card because a card with this ID cannot be found in the database"
         );
+
+      if (card.user_id !== user._id && !user.isAdmin)
+        throw new Error(
+          "Deleting denied: only the user who created the card or admin can delete this card."
+        );
+
+      card = await Card.findByIdAndDelete(cardId);
       return Promise.resolve(card);
     } catch (error) {
       error.status = 404;

@@ -15,6 +15,7 @@ const {
 } = require("../models/cardsAccessData");
 const validateCard = require("../validations/cardValidationService");
 const normalizeCard = require("../helpers/normalizeCard");
+const auth = require("../../auth/authService");
 
 router.get("/", async (req, res) => {
   try {
@@ -45,13 +46,22 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
   try {
-    let card = req.body;
+    const { isBusiness, isAdmin } = req.user;
+    if (!isBusiness || !isAdmin)
+      return handleError(
+        res,
+        403,
+        "Forbidden request: Only business user or admin can create business card."
+      );
 
-    const { error } = validateCard(req.body); //validation of JOI or other validator
+    let card = req.body;
+    const { error } = validateCard(card);
+
     if (error)
       return handleError(res, 400, `Joi Error: ${error.details[0].message}`);
+
     card = await normalizeCard(req.body);
     card = await createCard(card);
     return res.status(201).send(card);
@@ -60,31 +70,56 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/", async (req, res) => {
+router.put("/:id", auth, async (req, res) => {
   try {
-    const id = req.params;
-    const card = await updateCard(id, req.body);
+    const userId = req.user._id;
+    const cardId = req.params;
+    let card = req.body;
+
+    if (userId !== cardId)
+      return handleError(
+        res,
+        403,
+        "Access Error: Only the user who created the card can update it."
+      );
+
+    const { error } = validateCard(card);
+    if (error)
+      return handleError(res, 400, `Joi Error: ${error.details[0].message}`);
+
+    card = await normalizeCard(card);
+    card = await updateCard(cardId, card);
     return res.send(card);
   } catch (error) {
     return handleError(res, error.status || 500, error.message);
   }
 });
 
-router.patch("/", async (req, res) => {
+router.patch("/:id", auth, async (req, res) => {
   try {
-    const id = req.params;
-    const userId = "123456";
-    const card = await likeCard(id, userId);
+    const cardId = req.params;
+    const userId = req.user._id;
+
+    if (!userId)
+      return handleError(
+        res,
+        403,
+        "Authorization Error: Only registrated users can like business cards."
+      );
+
+    const card = await likeCard(cardId, userId);
     return res.send(card);
   } catch (error) {
     return handleError(res, error.status || 500, error.message);
   }
 });
 
-router.delete("/", async (req, res) => {
+router.delete("/:id", auth, async (req, res) => {
   try {
-    const id = req.params;
-    const card = await deleteCard(id);
+    const cardId = req.params;
+    const user = req.user;
+
+    const card = await deleteCard(cardId, user);
     return res.send(card);
   } catch (error) {
     return handleError(res, error.status || 500, error.message);
