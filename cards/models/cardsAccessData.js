@@ -113,8 +113,7 @@ const deleteCard = async (cardId, user) => {
         throw new Error(
           "Could not delete this card because a card with this ID cannot be found in the database"
         );
-
-      if (card.user_id !== user._id && !user.isAdmin)
+      if (card.user_id.toString() !== user._id && !user.isAdmin)
         throw new Error(
           "Deleting denied: only the user who created the card or admin can delete this card."
         );

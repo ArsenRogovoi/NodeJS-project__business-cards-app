@@ -25,11 +25,11 @@ const registerValidation = (user) => {
       .required(),
     password: Joi.string()
       .ruleset.regex(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*-])[A-Za-z\d!@#$%^&*-]{9,}$/
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*-])[A-Za-z\d!@#$%^&*-]{6,}$/
       )
       .rule({
         message:
-          "password must be at least 9 symbols and must have at least one capital letter, one lowercase letter, one digit and one of special symbols: '!@#$%^&*-'",
+          "password must be at least 6 symbols and must have at least one capital letter, one lowercase letter, one digit and one of special symbols: '!@#$%^&*-'",
       })
       .required(),
     image: Joi.object()

@@ -6,10 +6,12 @@ const {
   loginUser,
   getUsers,
   getUser,
+  editUser,
 } = require("../models/usersAccessData");
 const {
   validateRegistration,
   validateLogin,
+  validateUserToEdit,
 } = require("../validations/userValidationService");
 const normalizeUser = require("../helpers/normalizeUser");
 const auth = require("../../auth/authService");
@@ -21,7 +23,6 @@ router.post("/", async (req, res) => {
     const { error } = validateRegistration(user);
     if (error)
       return handleError(res, 400, `Joi Error: ${error.details[0].message}`);
-    console.log(user);
     user = await normalizeUser(user);
     user = await registerUser(user);
     return res.send(user).status(201);
@@ -76,6 +77,36 @@ router.get("/:id", auth, async (req, res) => {
     return handleError(res, status || 500, error.message);
   }
 });
+
+router.put("/:id", auth, async (req, res) => {
+  try {
+    let userFromClient = req.body;
+    const userIdToEdit = req.params.id;
+    const authUser = req.user;
+
+    if (authUser._id !== userIdToEdit)
+      return handleError(
+        res,
+        403,
+        "Authorization Error: Signup to edit your data"
+      );
+
+    const { error } = validateUserToEdit(userFromClient);
+    if (error)
+      return handleError(res, 400, `Joi Error: ${error.details[0].message}`);
+
+    userFromClient = await normalizeUser(userFromClient);
+    userFromClient = await editUser(userIdToEdit, userFromClient);
+
+    return res.send(userFromClient);
+  } catch (error) {
+    return handleError(res, error.status || 500, error.message);
+  }
+});
+
+router.patch("/:id", auth, async (req, res) => {});
+
+router.delete("/:id", auth, async (req, res) => {});
 
 router.use((req, res) => handleError(res, 404, "Page not found in users"));
 

@@ -1,6 +1,6 @@
 const generateBizNumber = require("./generateBizNumber");
 
-const normalizeCard = async (rawCard) => {
+const normalizeCard = async (rawCard, userId) => {
   const { url, alt } = rawCard.image;
   const image = {
     url:
@@ -17,7 +17,7 @@ const normalizeCard = async (rawCard) => {
       state: rawCard.address.state || "not defined",
     },
     bizNumber: rawCard.bizNumber || (await generateBizNumber()),
-    user_id: "634695107dda7ef92a00e915",
+    user_id: rawCard.user_id || userId,
   };
 };
 

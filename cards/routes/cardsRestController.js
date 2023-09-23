@@ -48,13 +48,14 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", auth, async (req, res) => {
   try {
-    const { isBusiness, isAdmin } = req.user;
-    if (!isBusiness || !isAdmin)
+    const { isBusiness, _id } = req.user;
+    if (!isBusiness) {
       return handleError(
         res,
         403,
-        "Forbidden request: Only business user or admin can create business card."
+        "Forbidden request: Only business user can create business card."
       );
+    }
 
     let card = req.body;
     const { error } = validateCard(card);
@@ -62,7 +63,7 @@ router.post("/", auth, async (req, res) => {
     if (error)
       return handleError(res, 400, `Joi Error: ${error.details[0].message}`);
 
-    card = await normalizeCard(req.body);
+    card = await normalizeCard(req.body, _id);
     card = await createCard(card);
     return res.status(201).send(card);
   } catch (error) {
@@ -73,10 +74,10 @@ router.post("/", auth, async (req, res) => {
 router.put("/:id", auth, async (req, res) => {
   try {
     const userId = req.user._id;
-    const cardId = req.params;
+    const cardId = req.params.id;
     let card = req.body;
 
-    if (userId !== cardId)
+    if (userId !== card.user_id)
       return handleError(
         res,
         403,
@@ -97,7 +98,7 @@ router.put("/:id", auth, async (req, res) => {
 
 router.patch("/:id", auth, async (req, res) => {
   try {
-    const cardId = req.params;
+    const cardId = req.params.id;
     const userId = req.user._id;
 
     if (!userId)
@@ -116,7 +117,7 @@ router.patch("/:id", auth, async (req, res) => {
 
 router.delete("/:id", auth, async (req, res) => {
   try {
-    const cardId = req.params;
+    const cardId = req.params.id;
     const user = req.user;
 
     const card = await deleteCard(cardId, user);
