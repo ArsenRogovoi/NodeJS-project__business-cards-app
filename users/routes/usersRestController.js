@@ -7,6 +7,8 @@ const {
   getUsers,
   getUser,
   editUser,
+  changeUserBusinessStatus,
+  deleteUser,
 } = require("../models/usersAccessData");
 const {
   validateRegistration,
@@ -104,9 +106,43 @@ router.put("/:id", auth, async (req, res) => {
   }
 });
 
-router.patch("/:id", auth, async (req, res) => {});
+router.patch("/:id", auth, async (req, res) => {
+  try {
+    let user = req.user;
+    const userId = req.params.id;
 
-router.delete("/:id", auth, async (req, res) => {});
+    if (user._id !== userId)
+      return handleError(
+        res,
+        403,
+        "Authorization Error: Only registrated user can edit his data"
+      );
+
+    user = await changeUserBusinessStatus(userId);
+    return res.send(user);
+  } catch (error) {
+    return handleError(res, error.status || 500, error.message);
+  }
+});
+
+router.delete("/:id", auth, async (req, res) => {
+  try {
+    const { _id, isAdmin } = req.user;
+    const userId = req.params.id;
+
+    if (_id !== userId && !isAdmin)
+      return handleError(
+        res,
+        403,
+        "Authorization Error: Only registrated user or admin can delete this user"
+      );
+
+    const user = await deleteUser(userId);
+    return res.send(user);
+  } catch (error) {
+    return handleError(res, error.status || 500, error.message);
+  }
+});
 
 router.use((req, res) => handleError(res, 404, "Page not found in users"));
 

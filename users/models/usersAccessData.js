@@ -99,9 +99,48 @@ const editUser = async (userId, normalizedUser) => {
   return Promise.resolve("user updated not in mongodb");
 };
 
-const changeUserBusinessStatus = async (userId) => {};
+const changeUserBusinessStatus = async (userId) => {
+  if (DB === "MONGODB") {
+    try {
+      const pipeline = [{ $set: { isBusiness: { $not: "$isBusiness" } } }];
+      const user = await User.findByIdAndUpdate(userId, pipeline, {
+        new: true,
+      }).select(["-password", "-__v"]);
 
-const deleteUser = async (userId) => {};
+      if (!user)
+        throw new Error(
+          "Could not update this user isBusiness status because a user with this ID cannot be found in the database"
+        );
+
+      return Promise.resolve(user);
+    } catch (error) {
+      error.status = 400;
+      return Promise.reject(error);
+    }
+  }
+  return Promise.resolve("user bizStatus changed not in mongodb");
+};
+
+const deleteUser = async (userId) => {
+  if (DB === "MONGODB") {
+    try {
+      const user = await User.findByIdAndDelete(userId, {
+        password: 0,
+        __v: 0,
+      });
+
+      if (!user)
+        throw new Error(
+          "Could not delete this user because a user with this ID cannot be found in the database"
+        );
+      return Promise.resolve(user);
+    } catch (error) {
+      error.status = 400;
+      return Promise.reject(error);
+    }
+  }
+  return Promise.resolve("user deleted not in mongodb");
+};
 
 exports.loginUser = loginUser;
 exports.registerUser = registerUser;
