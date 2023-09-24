@@ -262,7 +262,9 @@ Workspace ID: 47de255c-7b6a-4800-bebf-a89072094736
         "street": "test", // required
         "houseNumber": 3, // required
         "zip": "0" //isn't required
-      }
+      },
+      "bizNumber": "*******", //required (if you don't insert your card number it will be change to another random number)
+      "user_id": "************************" //required (user id who created the card)
 }
 ```
 

@@ -38,8 +38,8 @@ const cardSchema = new mongoose.Schema({
   address: Address,
   bizNumber: {
     type: Number,
-    min: 100_000_000,
-    max: 999_999_999,
+    min: 1_000_000,
+    max: 9_999_999,
     required: true,
   },
   createdAt: {
