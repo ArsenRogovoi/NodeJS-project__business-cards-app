@@ -1,9 +1,9 @@
 # Business cards app
 
 This is a project of HackerU bootcamp in NodeJS. This app
-is a REST API server of business cards which registered users create for other users of this server.
+is a REST API server of business cards app where business users advertise their businesses by creating cards of their business and where other users can look for the posted different services.
 
-If you are not a registered user you can search for business cards that other business users created but if you want create your own card you have to register like a business user.
+In this server you can do different things depending on your permissions.
 
 ## Postman:
 
@@ -166,38 +166,6 @@ Workspace ID: 47de255c-7b6a-4800-bebf-a89072094736
 **Return**: Array of card objects </br>
 **Action**: Getting cards from DB.
 
-- **Getting my cards (for business users only):**
-
-  To get your created cards use this http request. Remember, you must be business user:
-
-**Route**: _host_/cards/my-cards </br>
-**Mehtod**: GET </br>
-**Authorization**: JWT token is required </br>
-**Headers**: `x-auth-token` (jwt token) </br>
-**Return**: Cards that you created </br>
-**Action**: Getting your cards from DB.
-
-- **Getting my cards (for business users only):**
-
-  To get your created cards use this http request. Remember, you must be a business user:
-
-**Route**: _host_/cards/my-cards </br>
-**Mehtod**: GET </br>
-**Authorization**: JWT token is required </br>
-**Headers**: `x-auth-token` (jwt token) </br>
-**Return**: Cards that you created </br>
-**Action**: Getting your cards from DB.
-
-- **Getting card:**
-
-  If you want to get object of specific card use this request:
-
-**Route**: _host_/cards/_cardId_ </br>
-**Mehtod**: GET </br>
-**Authorization**: none </br>
-**Return**: Card object </br>
-**Action**: Getting card from DB.
-
 - **Creating business card (for business users only):**
 
   To create business card you must be a business user:
@@ -233,6 +201,38 @@ Workspace ID: 47de255c-7b6a-4800-bebf-a89072094736
 **Headers**: `x-auth-token` (jwt token) </br>
 **Return**: Created card </br>
 **Action**: Create new card and save it in DB.
+
+- **Getting my cards (for business users only):**
+
+  To get your created cards use this http request. Remember, you must be business user:
+
+**Route**: _host_/cards/my-cards </br>
+**Mehtod**: GET </br>
+**Authorization**: JWT token is required </br>
+**Headers**: `x-auth-token` (jwt token) </br>
+**Return**: Cards that you created </br>
+**Action**: Getting your cards from DB.
+
+- **Getting my cards (for business users only):**
+
+  To get your created cards use this http request. Remember, you must be a business user:
+
+**Route**: _host_/cards/my-cards </br>
+**Mehtod**: GET </br>
+**Authorization**: JWT token is required </br>
+**Headers**: `x-auth-token` (jwt token) </br>
+**Return**: Cards that you created </br>
+**Action**: Getting your cards from DB.
+
+- **Getting card:**
+
+  If you want to get object of specific card use this request:
+
+**Route**: _host_/cards/_cardId_ </br>
+**Mehtod**: GET </br>
+**Authorization**: none </br>
+**Return**: Card object </br>
+**Action**: Getting card from DB.
 
 - **Editing business card (for user who created the card):**
 
