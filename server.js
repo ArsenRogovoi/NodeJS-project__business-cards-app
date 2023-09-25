@@ -26,7 +26,7 @@ app.use((err, req, res, next) => {
 const PORT = config.get("PORT");
 const HOST = config.get("HOST");
 app.listen(PORT, () => {
-  console.log(chalk.blueBright(`listening to http://${HOST}:${PORT}`));
+  console.log(chalk.blueBright(`listening to ${HOST}:${PORT}`));
   connectToDb();
   generateInitialCards();
   generateInitialUsers();

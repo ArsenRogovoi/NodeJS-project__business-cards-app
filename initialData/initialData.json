@@ -64,7 +64,7 @@
         "houseNumber": 3,
         "zip": "0"
       },
-      "bizNumber": 100000000
+      "bizNumber": 1000000
     },
     {
       "title": "second card",
@@ -85,7 +85,7 @@
         "houseNumber": 3,
         "zip": "0"
       },
-      "bizNumber": 100000001
+      "bizNumber": 1000001
     },
     {
       "title": "third card",
@@ -106,7 +106,7 @@
         "houseNumber": 3,
         "zip": "0"
       },
-      "bizNumber": 100000002
+      "bizNumber": 1000002
     }
   ]
 }
