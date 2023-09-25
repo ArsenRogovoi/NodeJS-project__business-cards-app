@@ -204,17 +204,6 @@ Workspace ID: 47de255c-7b6a-4800-bebf-a89072094736
 
 - **Getting my cards (for business users only):**
 
-  To get your created cards use this http request. Remember, you must be business user:
-
-**Route**: _host_/cards/my-cards </br>
-**Mehtod**: GET </br>
-**Authorization**: JWT token is required </br>
-**Headers**: `x-auth-token` (jwt token) </br>
-**Return**: Cards that you created </br>
-**Action**: Getting your cards from DB.
-
-- **Getting my cards (for business users only):**
-
   To get your created cards use this http request. Remember, you must be a business user:
 
 **Route**: _host_/cards/my-cards </br>
