@@ -5,6 +5,28 @@ is a REST API server of business cards app where business users advertise their 
 
 In this server you can do different things depending on your permissions.
 
+## Installation:
+
+When you download this repository on your machine, check the configuration files in `config` folder to be sure that app is running with right environment variables. You can find there `development.json`, `production.json` and `default.json` files where you can define environment variables.
+
+Open this repo in terminal and run next command to install all the libraries:
+
+```bash
+npm run i
+```
+
+If you want to run app in development environment run:
+
+```bash
+npm run dev
+```
+
+And if you want to run app in production environment run:
+
+```bash
+npm run start
+```
+
 ## Postman:
 
 You can visit my workspace in postman.
