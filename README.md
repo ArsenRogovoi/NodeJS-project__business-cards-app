@@ -27,6 +27,8 @@ And if you want to run app in production environment run:
 npm run start
 ```
 
+When application is running you can see logs that say on which host and port the app is running and which database is connected. If at this stage you see these logs you can start making HTTP requests and use this server.
+
 ## Postman:
 
 You can visit my workspace in postman.
